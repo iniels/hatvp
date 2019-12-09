@@ -2,7 +2,7 @@ import csv
 from datetime import datetime
 from django.db import models
 from django.core.management.base import BaseCommand, CommandError
-from hatvp.models import GeneralInformation, Affiliation, Director, Associate, Client, Level
+from hatvp.models import GeneralInformation, Affiliation, Director, Associate, Client, Level, Period
 
 class Command(BaseCommand):
     help = ''
@@ -43,6 +43,7 @@ class Command(BaseCommand):
         #self.import_csv(Director)
         #self.import_csv(Associate)
         #self.import_csv(Client)
-        self.import_csv(Level)
+        #self.import_csv(Level)
+        self.import_csv(Period)
         #self.import_csv(Affiliation)
 
