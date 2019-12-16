@@ -5,3 +5,4 @@ from .client import Client
 from .affiliation import Affiliation
 from .level import Level
 from .period import Period
+from .activity import Activity
