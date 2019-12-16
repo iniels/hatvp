@@ -3,7 +3,7 @@ from .related import AutoModel
 from .information import GeneralInformation
 from .activity import Activity
 
-class Target(AutoModel):
+class Observation(AutoModel):
     __source__ = "hatvp/data/14_observations.csv"
 
     representant = models.ForeignKey(GeneralInformation, verbose_name="action_representation_interet_id", on_delete=models.CASCADE)

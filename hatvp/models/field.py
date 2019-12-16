@@ -1,5 +1,5 @@
 from django.db import models
-from .related import RepresentantRelatedModel
+from .related import RelatedInformation
 
 class Field(RelatedInformation):
     __source__ = "hatvp/data/9_secteurs_activites.csv"

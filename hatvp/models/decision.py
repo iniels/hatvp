@@ -1,5 +1,6 @@
 from django.db import models
 from .related import AutoModel
+from .information import GeneralInformation
 
 class Decision(AutoModel):
     __source__ = "hatvp/data/12_decisions_concernees.csv"

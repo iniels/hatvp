@@ -1,5 +1,6 @@
 from django.db import models
 from .related import AutoModel
+from .information import GeneralInformation
 
 class Target(AutoModel):
     __source__ = "hatvp/data/13_ministeres_aai_api.csv"

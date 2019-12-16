@@ -1,5 +1,5 @@
 from django.db import models
-from .related import RepresentantRelatedModel
+from .information import GeneralInformation
 
 class Beneficiary(models.Model):
     __source__ = "hatvp/data/11_beneficiaires.csv"

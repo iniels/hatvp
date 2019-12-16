@@ -1,7 +1,7 @@
 from django.db import models
-from .related import RepresentantRelatedModel
+from .information import GeneralInformation
 
-class Field(models.Model):
+class Action(models.Model):
     __source__ = "hatvp/data/10_actions_menees.csv"
 
     desc = models.TextField(verbose_name="action_menee")

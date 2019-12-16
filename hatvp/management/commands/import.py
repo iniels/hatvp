@@ -7,11 +7,8 @@ from hatvp.models import GeneralInformation, Affiliation, Director, Associate, C
 class Command(BaseCommand):
     help = ''
 
-#    def add_arguments(self, parser):
-#        parser.add_argument('poll_ids', nargs='+', type=int)
-
     def import_csv(self, cls):
-        with open(cls.__source__) as src:
+        with open(cls.__source__, "rU") as src:
             print("Importing '{}' ... ".format(cls._meta.object_name), end='')
             reader = csv.reader(src, delimiter=';', quotechar='"')
             header = next(reader)
@@ -21,7 +18,9 @@ class Command(BaseCommand):
             # print(cols)
             cnt = 0
             for row in reader:
-                print(row)
+                if int(row[0]) < 10506:
+                    continue
+                print(row[0])
                 defaults = {}
                 for field in cls._meta.fields:
                     if isinstance(field, models.AutoField):
@@ -47,9 +46,14 @@ class Command(BaseCommand):
 #        self.import_csv(Director)
 #        self.import_csv(Associate)
 #        self.import_csv(Client)
+#        self.import_csv(Affiliation)
 #        self.import_csv(Level)
 #        self.import_csv(Period)
-        Activity.objects.all().delete()
         self.import_csv(Activity)
-        #self.import_csv(Domain)
-        #self.import_csv(Affiliation)
+#        self.import_csv(Domain)
+#        self.import_csv(Field)
+#        self.import_csv(Action)
+#        self.import_csv(Beneficiary)
+#        self.import_csv(Decision)
+#        self.import_csv(Target)
+#        self.import_csv(Observation)
