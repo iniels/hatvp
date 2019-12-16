@@ -1,9 +1,12 @@
-import zipfile
-import csv
+import csv, os, zipfile
+import urllib.request
 from datetime import datetime
+
 from django.db import models
 from django.core.management.base import BaseCommand, CommandError
-from hatvp.models import GeneralInformation, Affiliation, Director, Associate, Client, Level, Period, Activity
+
+from hatvp.models import GeneralInformation, Affiliation, Director, Associate
+from hatvp.models import Client, Level, Period, Activity, Domain, Field
 
 class Command(BaseCommand):
     help = 'Import HATVP data from models and CSV files'
@@ -26,7 +29,7 @@ class Command(BaseCommand):
 
             cnt = 0
             for row in reader:
-                # print(row[0]) # debug
+                print(row[0]) # debug
 
                 # prepare a dict for 'update_or_create'
                 defaults = {}
@@ -56,11 +59,29 @@ class Command(BaseCommand):
                 cls.objects.update_or_create(defaults, pk=defaults["id"])
                 cnt += 1
             print("done {} records".format(cnt))
-            
+
+
+    def download_and_unzip(self):
+        print("Downloading latest HATVP data ... ", )
+        local_filename, headers = urllib.request.urlretrieve('https://www.hatvp.fr/agora/opendata/csv/Vues_Separees_CSV.zip')
+        print("done")
+
+        print("Unzipping ... ", )
+        zip_ref = zipfile.ZipFile(local_filename, 'r')
+        zip_ref.extractall('.')
+        zip_ref.close()
+        print("done")
+
+        print("Moving ... ", )
+        os.rename("Vues séparées", "hatvp/data")
+        print("done")
+
+
     def handle(self, *args, **options):
         '''
         import data in the correct order
         '''
+#        self.download_and_unzip()
 #        self.import_csv(GeneralInformation)
 #        self.import_csv(Director)
 #        self.import_csv(Associate)
@@ -68,10 +89,10 @@ class Command(BaseCommand):
 #        self.import_csv(Affiliation)
 #        self.import_csv(Level)
 #        self.import_csv(Period)
-        self.import_csv(Activity)
+#        self.import_csv(Activity)
 #        self.import_csv(Domain)
 #        self.import_csv(Field)
-#        self.import_csv(Action)
+        self.import_csv(Action)
 #        self.import_csv(Beneficiary)
 #        self.import_csv(Decision)
 #        self.import_csv(Target)
