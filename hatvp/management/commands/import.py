@@ -1,5 +1,6 @@
 import csv, os, zipfile
 import urllib.request
+from shutil import rmtree
 from datetime import datetime
 
 from django.db import models
@@ -7,6 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from hatvp.models import GeneralInformation, Affiliation, Director, Associate
 from hatvp.models import Client, Level, Period, Activity, Domain, Field
+from hatvp.models import TypeAction, Action, Beneficiary, Decision, Target, Observation
 
 class Command(BaseCommand):
     help = 'Import HATVP data from models and CSV files'
@@ -18,7 +20,7 @@ class Command(BaseCommand):
         the name of the column to retrieve in the file
         '''
         with open(cls.__source__, "rU") as src:
-            print("Importing '{}' ... ".format(cls._meta.object_name), end='')
+            print("Importing '{}' ".format(cls._meta.object_name), end='')
             reader = csv.reader(src, delimiter=';', quotechar='"')
             header = next(reader)
             cols = {}
@@ -29,7 +31,7 @@ class Command(BaseCommand):
 
             cnt = 0
             for row in reader:
-                print(row[0]) # debug
+                #print(row) # debug
 
                 # prepare a dict for 'update_or_create'
                 defaults = {}
@@ -58,6 +60,8 @@ class Command(BaseCommand):
                 # update or create an instance
                 cls.objects.update_or_create(defaults, pk=defaults["id"])
                 cnt += 1
+                if cnt % 100:
+                    print(".", end='', flush=True)
             print("done {} records".format(cnt))
 
 
@@ -72,7 +76,8 @@ class Command(BaseCommand):
         zip_ref.close()
         print("done")
 
-        print("Moving ... ", )
+        print("Cleaning and moving ... ", )
+        rmtree("hatvp/data")
         os.rename("Vues séparées", "hatvp/data")
         print("done")
 
@@ -92,8 +97,9 @@ class Command(BaseCommand):
 #        self.import_csv(Activity)
 #        self.import_csv(Domain)
 #        self.import_csv(Field)
-        self.import_csv(Action)
-#        self.import_csv(Beneficiary)
+#        self.import_csv(Action)
+#        self.import_csv(TypeAction)
+        self.import_csv(Beneficiary)
 #        self.import_csv(Decision)
 #        self.import_csv(Target)
 #        self.import_csv(Observation)

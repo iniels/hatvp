@@ -8,7 +8,7 @@ from .period import Period # 15
 from .activity import Activity # 8
 from .domain import Domain # 7
 from .field import Field # 9
-from .action import Action # 10
+from .action import Action, TypeAction # 10
 from .beneficiary import Beneficiary # 11
 from .decision import Decision # 12
 from .target import Target # 13
